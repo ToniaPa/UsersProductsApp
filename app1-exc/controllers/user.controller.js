@@ -23,7 +23,9 @@ exports.findOne = async(req, res) => {
     const result = await User.findOne({ username: username})
     res.status(200).json({data: result});
   } catch(err) {
-    console.log(`Problem in reading user, ${err}`)
+  const username = req.params.username;
+  console.log(`Problem in reading user: ${username}, ${err}`)
+  logger.error(`Problem in reading user: ${username}, ${err}`);
   }
 }
 
@@ -48,6 +50,7 @@ exports.create = async(req, res) => {
   } catch(err) {
     res.status(400).json({data: err})
     console.log("Problem in saving user", err);
+    logger.error("Problem in saving new user");
   }
 }
 
@@ -75,6 +78,7 @@ exports.update = async(req, res) => {
   } catch(err){
     res.status(400).json({data: err})
     console.log("Problem in updating user: ", username);
+    logger.error(`Problem in updating user: ${username}, ${err}`);
   }
 }
 
@@ -90,5 +94,6 @@ exports.delete = async(req, res) => {
   } catch(err) {
     res.json({data: err});
     console.log("Problem in deleting user");
+    logger.error(`Problem in deleting user: ${username}, ${err}`);
   }
 }
